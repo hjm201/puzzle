@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>拼图游戏</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>-->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" href="css/main.css" type="text/css" media="screen">
+    <script type="text/javascript">
+
+        if(/Android (\d+\.\d+)/.test(navigator.userAgent)){
+            var version = parseFloat(RegExp.$1);
+            if(version>2.3){
+                var phoneScale = parseInt(window.screen.width)/640;
+                document.write('<meta name="viewport" content="width=640, minimum-scale = '+ phoneScale +', maximum-scale = '+ phoneScale +', target-densitydpi=device-dpi">');
+            }else{
+                document.write('<meta name="viewport" content="width=640, target-densitydpi=device-dpi">');
+            }
+        }else{
+            document.write('<meta name="viewport" content="width=640, user-scalable=no, target-densitydpi=device-dpi">');
+        }
+    </script>
+    <script type="application/javascript" src="js/zepto.min.js"></script>
+    <script type="application/javascript" src="js/touch.min.js"></script>
+    <script type="application/javascript" src="js/main.js"></script>
+    <script type="application/javascript">
+
+        $(function(){
+            var num = 2;
+            var clearInt = -1;
+            var url = window.location.href;
+            //
+            jigsaw.init({
+                id:"#board",
+                col:getUrlArgs("col",url)||3,
+                row:getUrlArgs("row",url)||3,
+                callback:function(){
+                    alert("恭喜你，答对了！");
+                }
+            });
+
+
+            $(".angle").on("tap",function(){
+                $(this).addClass("hide");
+                $(".num").removeClass("hide").html(num);
+                clearInt = setInterval(function(){
+                    num --;
+                    if(num <= 0){
+                        window.clearInterval(clearInt);
+                        $(".circle").addClass("hide");
+                        jigsaw.game.start();
+                    }else{
+                        $(".num").html(num);
+                    }
+                },1000);
+            });
+
+            function getUrlArgs(_name, str){
+                var flag = new RegExp(".*\\b"+_name+"\\b(\\s*=([^&]+)).*", "gi").test(str);
+                if(flag){
+                    return RegExp.$2;
+                }else{
+                    return "";
+                }
+            }
+        })
+
+
+    </script>
+    <style>
+
+
+    </style>
+</head>
+<body>
+
+    <div id="board">
+        <img src="images/pic_2.jpg">
+    </div>
+    <div class="circle">
+        <span class="text angle">▲</span>
+        <span class="text hide num">3</span>
+    </div>
+</body>
+</html>

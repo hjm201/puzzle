@@ -35,11 +35,55 @@
                 id:"#board",
                 col:getUrlArgs("col",url)||3,
                 row:getUrlArgs("row",url)||3,
-                callback:function(){
-                    alert("恭喜你，答对了！");
-                }
+//                callback:function(){
+//                    alert("恭喜你，答对了！");
+//                },
+                times:60000,
+                width:560,
+                height:520,
+                time_callback:showTime,
+                result_callback:showResult
             });
 
+            function showTime(str){
+                console.log("showTime--str:"+str);
+                $(".counter").html(str);
+            }
+
+            function showResult(flag){
+                if(flag){
+                    showSuccess();
+                }else{
+                    showFail();
+                }
+            }
+
+            function showSuccess(){
+                $(".result").show();
+                $(".r_info").eq(0).removeClass("hide");
+                $(".r_info").eq(1).addClass("hide");
+                $(".text").html("闯关成功，你的新的广告语，请放在这里面。");
+                $(".btngroup a").eq(0).removeClass("hide");
+                $(".btngroup a").eq(1).addClass("hide");
+            }
+
+            function showFail(){
+                $(".result").show();
+                $(".r_info").eq(1).removeClass("hide");
+                $(".r_info").eq(0).addClass("hide");
+                $(".text").html("闯关失败，你的新的广告语，请放在这里面。");
+                $(".btngroup a").eq(1).removeClass("hide");
+                $(".btngroup a").eq(0).addClass("hide");
+            }
+
+            $(".btngroup a").eq(0).on("tap", function(){
+                $(".result").hide();
+                jigsaw.game.reset();
+            });
+            $(".btngroup a").eq(1).on("tap", function(){
+                $(".result").hide();
+                jigsaw.game.reset();
+            });
 
             $(".angle").on("tap",function(){
                 $(this).addClass("hide");
@@ -74,13 +118,42 @@
     </style>
 </head>
 <body>
+    <div class="page">
+        <div id="board">
+            <img src="images/a.jpg">
+        </div>
+        <div class="circle">
+            <span class="text angle">▲</span>
+            <span class="text hide num">3</span>
+        </div>
+        <div class="level">
+            第<em>1</em>关
+        </div>
+        <div class="timer">
+            <div class="timer-con">
+                <span class="timer-icon"></span>
+                <span class="t counter">00.00''</span>
+            </div>
+            <div class="info">本关限时 60 秒</div>
+        </div>
 
-    <div id="board">
-        <img src="images/pic_2.jpg">
+        <div  class="result">
+            <div class="r_container">
+                <div class="resultInfo">
+                    <div class="r_info"> 第1关闯关成功！</div>
+                    <div class="r_info hide"> 闯关成功,共阅过1关</div>
+                    <div class="text">
+                        广告语广告语广告语广告语广告语广告语广告语广告语广告语
+                    </div>
+                </div>
+                <div class="btngroup">
+                    <a>下一关</a>
+                    <a class="hide">再玩一次</a>
+                </div>
+            </div>
+        </div>
+
     </div>
-    <div class="circle">
-        <span class="text angle">▲</span>
-        <span class="text hide num">3</span>
-    </div>
+
 </body>
 </html>
